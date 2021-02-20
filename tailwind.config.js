@@ -38,7 +38,23 @@ module.exports = {
       100: 100,
       auto: "auto",
     },
-    extend: {},
+
+    extend: {
+      animation: {
+        flash: "flash 0.5s linear 3 forwards 0.5s",
+        borderFlash: "borderFlash 0.5s linear 3 forwards 0.5s",
+      },
+      keyframes: {
+        flash: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
+        borderFlash: {
+          "0%, 49%, 100%": { borderColor: "black" },
+          "50%, 99%": { borderColor: "transparent" },
+        },
+      },
+    },
   },
   variants: {
     extend: {},

@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <MainHeader />
-      <main className="py-4 px-64">
+      <main className="py-4 mx-auto">
         <Board />
       </main>
     </div>

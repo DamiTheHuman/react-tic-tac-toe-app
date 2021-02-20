@@ -1,11 +1,11 @@
 import React from "react";
-
+import logo from "../../assets/images/logo.png";
 const MainHeader = () => {
   return (
     <header className="main-header">
       <nav className="sticky top-0 bg-primary shadow-lg text-white shadow-md min-w-full">
-        <div className="container mx-auto py-4">
-          <p>X/O</p>
+        <div className="container py-4 relative">
+          <img src={logo} className="mx-auto w-12" />
         </div>
       </nav>
     </header>

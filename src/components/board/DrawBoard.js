@@ -2,7 +2,14 @@ import React from "react";
 import XPiece from "../pieces/XPiece";
 import OPiece from "../pieces/OPiece";
 
-const DrawBoard = ({ layout, boardHistory, onCellSelected }) => {
+const DrawBoard = ({
+  layout,
+  boardHistory,
+  active,
+  onCellSelected,
+  winningFigures,
+  draw,
+}) => {
   const renderLayout = layout.map((row, index) => {
     const renderCells = row.map((cell, cellIndex) => {
       /* The value each cell holds*/
@@ -10,6 +17,17 @@ const DrawBoard = ({ layout, boardHistory, onCellSelected }) => {
       /** Renders the piece componenet based on the player */
       const getPieceComponenet = () => {
         return currentCellData[0].player === "x" ? <XPiece /> : <OPiece />;
+      };
+      const displayWinningFigures = () => {
+        if (winningFigures.length > 1) {
+          return winningFigures.includes(cellValue)
+            ? "animate-flash"
+            : "opacity-50";
+        }
+        return "";
+      };
+      const getBorderAnimation = () => {
+        return draw ? "animate-borderFlash" : "";
       };
       /** The cell data that has this value */
       const currentCellData = boardHistory.filter(
@@ -20,16 +38,17 @@ const DrawBoard = ({ layout, boardHistory, onCellSelected }) => {
           onClick={() => {
             onCellSelected(cellValue);
           }}
-          className={`cell p-8 w-40 h-44 cursor-pointer border-8 border-black
-          ${cellIndex === 0 ? "border-l-0" : ""}
-          ${index === 0 ? "border-t-0" : ""}
-          ${index === 2 ? "border-b-0" : ""}
-          ${cellIndex === 2 ? "border-r-0" : ""}
-          
-          `}
+          className={`cell p-4 w-40 h-32 
+          ${getBorderAnimation()}
+          ${displayWinningFigures()}
+          ${active ? "cursor-pointer" : ""} border-8 border-black ${
+            cellIndex === 0 ? "border-l-0" : ""
+          } ${index === 0 ? "border-t-0" : ""} ${
+            index === 2 ? "border-b-0" : ""
+          } ${cellIndex === 2 ? "border-r-0" : ""} `}
           key={cellIndex}
         >
-          <p>{currentCellData.length > 0 ? getPieceComponenet() : ""}</p>
+          {currentCellData.length > 0 ? getPieceComponenet() : ""}
         </th>
       );
     });
@@ -38,7 +57,9 @@ const DrawBoard = ({ layout, boardHistory, onCellSelected }) => {
 
   return (
     <div className="mt-4">
-      <table className="table-fixed mx-auto">{renderLayout}</table>
+      <table className="table-fixed mx-auto">
+        <tbody>{renderLayout}</tbody>
+      </table>
     </div>
   );
 };

@@ -1,14 +1,29 @@
 import React from "react";
 import DrawBoard from "./DrawBoard";
+import GameMessage from "./GameMessage";
 
 class Board extends React.Component {
   state = {
     boardHistory: [],
-    players: ["User", "AI"],
+    players: ["Player 1", "AI"],
     player1Turn: true,
-    winner: false,
+    winner: null,
     winType: 0,
+    draw: false,
+    winningFigures: [],
   };
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextState.winner && nextState.boardHistory.length >= 3) {
+      if (this.checkWinner(nextState.boardHistory)) {
+        return true;
+      }
+      //Check ifs a draw
+      if (nextState.boardHistory.length >= 9 && this.state.draw === false) {
+        this.setState({ draw: true });
+      }
+    }
+    return true;
+  }
   /**
    *Stores the data of the draw cell when a cell is selecte
    *@value the current value of the cell selected
@@ -30,18 +45,17 @@ class Board extends React.Component {
       {
         boardHistory: boardHistory,
       },
-      this.checkWinner(boardHistory)
+      this.toggleTurn()
     );
   };
   /**
    *Check for the winner
    * @currentBoardHistory the history of both players input on the board
    */
-  checkWinner = (currentBoardHistorys) => {
-    //Check player values
+  checkWinner = (currentBoardHistory) => {
     const playerValues = this.filterValues(
       this.getPlayer(),
-      currentBoardHistorys
+      currentBoardHistory
     );
     const possibleMatches = [
       [
@@ -72,20 +86,24 @@ class Board extends React.Component {
           }
         }
         if (matchCount >= 3) {
-          alert("WE HAVE A WNNER " + this.getPlayer());
-          this.setState({ winner: true, winType: y });
+          this.setState({
+            winner: this.getWinner(this.getPlayer()),
+            winType: y,
+            winningFigures: possibleMatches[x][y],
+          });
+          return true;
         }
       }
     }
-    this.toggleTurn();
+    return false;
   };
   /**
    *Extracts and sorts the draw cell data from the currentDrawCells
    *@filter the character to filter by "x"/"o"
    * @currentBoardHistory the history of both players input on the board
    */
-  filterValues = (filter, currentBoardHistorys) => {
-    return currentBoardHistorys
+  filterValues = (filter, currentBoardHistory) => {
+    return currentBoardHistory
       .filter((drawnCell) => drawnCell.player === filter)
       .map((cell) => {
         return cell.cell;
@@ -98,6 +116,12 @@ class Board extends React.Component {
    */
   getPlayer = () => {
     return this.state.player1Turn ? "x" : "o";
+  };
+  /**
+   *Retrieves the winner
+   */
+  getWinner = (playerIcon) => {
+    return playerIcon ? this.state.players[0] : this.state.players[1];
   };
   /**
    * Toggles the turns between players
@@ -121,11 +145,19 @@ class Board extends React.Component {
   render() {
     return (
       <div className="board">
+        <GameMessage
+          winner={this.state.winner}
+          currentPlayer={this.getWinner(this.getPlayer())}
+          draw={this.state.draw}
+        />
         <DrawBoard
           layout={this.getBoardLayout()}
           onCellSelected={this.onCellSelected}
           boardHistory={this.state.boardHistory}
           getPlayer={this.getPlayer}
+          active={this.state.winne || this.state.draw}
+          draw={this.state.draw}
+          winningFigures={this.state.winningFigures}
         />
       </div>
     );
