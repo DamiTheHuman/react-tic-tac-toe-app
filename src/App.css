@@ -11,3 +11,7 @@ th .content {
   -o-background-size: cover;
   background-size: cover;
 }
+.animate-flash,
+.animate-borderFlash {
+  visibility: visible;
+}
