@@ -3,7 +3,7 @@ import "./GameMenu.css";
 const GameMenu = ({ tally, player1Turn }) => {
   return (
     <div
-      className="game-menu z-10 bg-white w-full px-8 mt-8 
+      className="game-menu z-10 bg-white w-full sm:px-8 px-2 mt-8 
     border-gray-400 z-100 relative items-center text-xs sm:text-m"
     >
       <div className="flex justify-between">
