@@ -1,9 +1,9 @@
 import React from "react";
 
-const GameMessage = ({ winner, currentPlayer, draw }) => {
+const GameMessage = ({ winner, currentPlayer, tie }) => {
   const renderContent = () => {
-    if (draw) {
-      return "It's a Draw between both players";
+    if (tie) {
+      return "It's a Tie between both players";
     }
     return !winner ? `It's ${currentPlayer}'s Turn` : `The Winner is ${winner}`;
   };

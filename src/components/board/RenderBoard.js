@@ -2,50 +2,58 @@ import React from "react";
 import XPiece from "../pieces/XPiece";
 import OPiece from "../pieces/OPiece";
 
-const DrawBoard = ({
+const RenderBoard = ({
   layout,
   boardHistory,
-  active,
+  gameEnded,
   onCellSelected,
   winningFigures,
-  draw,
+  tie,
+  resetBoard,
 }) => {
   const renderLayout = layout.map((row, index) => {
     const renderCells = row.map((cell, cellIndex) => {
       /* The value each cell holds*/
       const cellValue = cellIndex + 1 + index * 3;
+
       /** Renders the piece componenet based on the player */
       const getPieceComponenet = () => {
         return currentCellData[0].player === "x" ? <XPiece /> : <OPiece />;
       };
+
+      /*Gives the winning figures an animation */
       const displayWinningFigures = () => {
-        if (winningFigures.length > 1) {
+        if (winningFigures.length > 1 && gameEnded) {
           return winningFigures.includes(cellValue)
             ? "animate-flash"
             : "opacity-50";
         }
         return "";
       };
+
+      /*Flashes the border when there is a tie */
       const getBorderAnimation = () => {
-        return draw ? "animate-borderFlash" : "";
+        return tie ? "animate-borderFlash" : "";
       };
       /** The cell data that has this value */
       const currentCellData = boardHistory.filter(
         (drawnCell) => drawnCell.cell === cellValue
       );
+
       return (
         <th
           onClick={() => {
-            onCellSelected(cellValue);
+            if (!gameEnded) {
+              onCellSelected(cellValue);
+            }
           }}
-          className={`cell p-4 w-40 h-32 
-          ${getBorderAnimation()}
-          ${displayWinningFigures()}
-          ${active ? "cursor-pointer" : ""} border-8 border-black ${
-            cellIndex === 0 ? "border-l-0" : ""
-          } ${index === 0 ? "border-t-0" : ""} ${
-            index === 2 ? "border-b-0" : ""
-          } ${cellIndex === 2 ? "border-r-0" : ""} `}
+          className={`cell h-36 ${getBorderAnimation()} ${displayWinningFigures()} ${
+            gameEnded ? "cursor-pointer" : ""
+          } border-8 border-black ${cellIndex === 0 ? "border-l-0" : ""} ${
+            index === 0 ? "border-t-0" : ""
+          }${index === 2 ? "border-b-0" : ""} ${
+            cellIndex === 2 ? "border-r-0" : ""
+          } `}
           key={cellIndex}
         >
           {currentCellData.length > 0 ? getPieceComponenet() : ""}
@@ -56,12 +64,19 @@ const DrawBoard = ({
   });
 
   return (
-    <div className="mt-4">
-      <table className="table-fixed mx-auto">
+    <div className="render-board py-8 px-8">
+      <table
+        className="table-fixed w-full"
+        onClick={() => {
+          if (gameEnded) {
+            resetBoard();
+          }
+        }}
+      >
         <tbody>{renderLayout}</tbody>
       </table>
     </div>
   );
 };
 
-export default DrawBoard;
+export default RenderBoard;

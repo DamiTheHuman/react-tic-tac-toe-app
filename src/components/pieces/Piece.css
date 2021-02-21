@@ -2,18 +2,18 @@
 .o-piece svg {
   overflow: visible;
   display: inline;
-  animation: fill 1s ease forwards 1s;
+  animation: fill 0.25s ease forwards 0.25s;
 }
 
 .x-piece svg path:nth-child(1) {
-  stroke-dasharray: 479.369110107421px;
-  stroke-dashoffset: 478.3691101074219px;
-  animation: line-anim 0.5s ease forwards;
+  stroke-dasharray: 322.3px;
+  stroke-dashoffset: 323.3px;
+  animation: line-anim 0.25s ease forwards;
 }
 .o-piece svg path:nth-child(1) {
-  stroke-dasharray: 507.38px;
-  stroke-dashoffset: 507.38px;
-  animation: line-anim 1s ease forwards;
+  stroke-dasharray: 300.29px;
+  stroke-dashoffset: 300.29px;
+  animation: line-anim 0.25s ease forwards;
 }
 @keyframes line-anim {
   to {
@@ -25,6 +25,6 @@
     fill: transparent;
   }
   to {
-    fill: #ddd;
+    fill: #6c757d;
   }
 }

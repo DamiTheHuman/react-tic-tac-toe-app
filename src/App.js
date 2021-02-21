@@ -1,17 +1,19 @@
-import logo from "./logo.svg";
+import React from "react";
 import "./App.css";
 import MainHeader from "./components/header/MainHeader";
 import Board from "./components/board/Board";
 
-function App() {
-  return (
-    <div className="App">
-      <MainHeader />
-      <main className="py-4 mx-auto">
-        <Board />
-      </main>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <MainHeader />
+        <main className="lg:px-64 md:px-16 px-0">
+          <Board />
+        </main>
+      </div>
+    );
+  }
 }
 
 export default App;

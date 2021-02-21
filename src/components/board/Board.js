@@ -1,25 +1,32 @@
 import React from "react";
-import DrawBoard from "./DrawBoard";
-import GameMessage from "./GameMessage";
+import GameMenu from "../game-menu/GameMenu";
+import RenderBoard from "./RenderBoard";
 
 class Board extends React.Component {
   state = {
+    tally: { player1Wins: 0, player2Wins: 0, ties: 0 },
+    gameEnded: false,
     boardHistory: [],
     players: ["Player 1", "AI"],
     player1Turn: true,
-    winner: null,
+    tie: false,
     winType: 0,
-    draw: false,
     winningFigures: [],
   };
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextState.winner && nextState.boardHistory.length >= 3) {
+    if (!nextState.gameEnded && nextState.boardHistory.length >= 3) {
       if (this.checkWinner(nextState.boardHistory)) {
         return true;
       }
-      //Check ifs a draw
-      if (nextState.boardHistory.length >= 9 && this.state.draw === false) {
-        this.setState({ draw: true });
+      //Check for ties if there is no winner
+      if (
+        nextState.boardHistory.length >= 9 &&
+        this.state.gameEnded === false &&
+        this.state.tie === false
+      ) {
+        this.setGameEnded(true);
+        this.incrementTally("tie");
+        this.setState({ tie: true });
       }
     }
     return true;
@@ -29,9 +36,10 @@ class Board extends React.Component {
    *@value the current value of the cell selected
    */
   onCellSelected = (value) => {
-    if (this.state.winner) {
+    if (this.state.gameEnded) {
       return;
     }
+
     for (var x = 0; x < this.state.boardHistory.length; x++) {
       if (this.state.boardHistory[x].cell === value) {
         return;
@@ -41,12 +49,9 @@ class Board extends React.Component {
       ...this.state.boardHistory,
       { cell: value, player: this.getPlayer() },
     ];
-    this.setState(
-      {
-        boardHistory: boardHistory,
-      },
-      this.toggleTurn()
-    );
+
+    this.setBoardHistory(boardHistory);
+    this.toggleTurn();
   };
   /**
    *Check for the winner
@@ -87,10 +92,11 @@ class Board extends React.Component {
         }
         if (matchCount >= 3) {
           this.setState({
-            winner: this.getWinner(this.getPlayer()),
             winType: y,
             winningFigures: possibleMatches[x][y],
           });
+          this.incrementTally(this.getPlayer());
+          this.setGameEnded(true);
           return true;
         }
       }
@@ -124,14 +130,6 @@ class Board extends React.Component {
     return playerIcon ? this.state.players[0] : this.state.players[1];
   };
   /**
-   * Toggles the turns between players
-   */
-  toggleTurn = () => {
-    this.setState({
-      player1Turn: !this.state.player1Turn,
-    });
-  };
-  /**
    *Gets the layout of the board
    */
   getBoardLayout = () => {
@@ -141,24 +139,87 @@ class Board extends React.Component {
       ["", "", ""],
     ];
   };
-
+  /**
+   * Resets the game to defaults except the tally
+   */
+  resetBoard = () => {
+    this.setState({
+      gameEnded: false,
+      winningFigures: [],
+      boardHistory: [],
+      players: ["Player 1", "AI"],
+      player1Turn: true,
+    });
+  };
+  /**
+   * Increments the tally based on the win type passed
+   */
+  incrementTally = (type) => {
+    var newTally = JSON.parse(JSON.stringify(this.state.tally));
+    switch (type) {
+      case "x":
+        newTally.player1Wins = this.state.tally.player1Wins + 1;
+        break;
+      case "o":
+        newTally.player2Wins += 1;
+        break;
+      case "tie":
+        newTally.ties += 1;
+        break;
+      default:
+        console.log("invalid tally type");
+        break;
+    }
+    this.setState({
+      tally: newTally,
+    });
+  };
+  /**
+   * Sets the game ended flag to active restricting all further board actions
+   */
+  setGameEnded = (value) => {
+    console.log("Called");
+    this.setState({ gameEnded: value });
+  };
+  /**
+   * Updates the Board History of the game
+   * @value the new value of the boardHistory
+   */
+  setBoardHistory = (value) => {
+    this.setState({
+      boardHistory: value,
+    });
+  };
+  /**
+   * Toggles the turns between players
+   */
+  toggleTurn = () => {
+    this.setState({
+      player1Turn: !this.state.player1Turn,
+    });
+  };
+  /**
+   * Resets the value of the tally's
+   */
+  resetTally = () => {
+    this.setState({
+      tally: { player1Wins: 0, player2Wins: 0, ties: 0 },
+    });
+  };
   render() {
     return (
-      <div className="board">
-        <GameMessage
-          winner={this.state.winner}
-          currentPlayer={this.getWinner(this.getPlayer())}
-          draw={this.state.draw}
-        />
-        <DrawBoard
+      <div className="board bg-secondary relative app-height">
+        <RenderBoard
           layout={this.getBoardLayout()}
           onCellSelected={this.onCellSelected}
           boardHistory={this.state.boardHistory}
           getPlayer={this.getPlayer}
-          active={this.state.winne || this.state.draw}
-          draw={this.state.draw}
+          gameEnded={this.state.gameEnded}
+          tie={this.state.tie}
           winningFigures={this.state.winningFigures}
+          resetBoard={this.resetBoard}
         />
+        <GameMenu tally={this.state.tally} />
       </div>
     );
   }
