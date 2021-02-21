@@ -47,16 +47,18 @@ const RenderBoard = ({
               onCellSelected(cellValue);
             }
           }}
-          className={`cell h-36 ${getBorderAnimation()} ${displayWinningFigures()} ${
+          className={`cell align-center ${getBorderAnimation()} ${displayWinningFigures()} ${
             gameEnded ? "cursor-pointer" : ""
-          } border-8 border-black ${cellIndex === 0 ? "border-l-0" : ""} ${
+          } border-8 border-silver  ${cellIndex === 0 ? "border-l-0" : ""} ${
             index === 0 ? "border-t-0" : ""
           }${index === 2 ? "border-b-0" : ""} ${
             cellIndex === 2 ? "border-r-0" : ""
           } `}
           key={cellIndex}
         >
-          {currentCellData.length > 0 ? getPieceComponenet() : ""}
+          <div className="content">
+            {currentCellData.length > 0 ? getPieceComponenet() : ""}
+          </div>
         </th>
       );
     });
@@ -64,7 +66,7 @@ const RenderBoard = ({
   });
 
   return (
-    <div className="render-board py-8 px-8">
+    <div className="render-board py-8 lg:px-40 md:px-36 px-4">
       <table
         className="table-fixed w-full"
         onClick={() => {

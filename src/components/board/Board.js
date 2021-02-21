@@ -208,7 +208,7 @@ class Board extends React.Component {
   };
   render() {
     return (
-      <div className="board bg-secondary relative app-height">
+      <div className="board bg-white relative">
         <RenderBoard
           layout={this.getBoardLayout()}
           onCellSelected={this.onCellSelected}
@@ -219,7 +219,10 @@ class Board extends React.Component {
           winningFigures={this.state.winningFigures}
           resetBoard={this.resetBoard}
         />
-        <GameMenu tally={this.state.tally} />
+        <GameMenu
+          tally={this.state.tally}
+          player1Turn={this.state.player1Turn}
+        />
       </div>
     );
   }

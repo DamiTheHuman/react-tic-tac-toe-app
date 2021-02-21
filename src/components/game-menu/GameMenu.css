@@ -1,0 +1,28 @@
+.game-menu .active:after {
+  content: "";
+  position: absolute;
+  margin: auto;
+  right: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  animation-name: grow-width;
+  animation-duration: 0.25s;
+}
+
+.game-menu .player-1.active:after {
+  background: #f83157;
+}
+.game-menu .player-2.active:after {
+  background: #3ba8d7;
+}
+
+@keyframes grow-width {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

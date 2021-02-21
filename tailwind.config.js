@@ -3,11 +3,14 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      rubik: ["Rubik", "sans-serif", "system-ui"],
+    },
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      primary: "#4338ca",
-      secondary: "#c7d2fe",
+      primary: "#f83157",
+      secondary: "#3ba8d7",
       tertiary: "#fafafa",
       quaternary: "#374151",
       quinary: "#0b0c10",
@@ -17,6 +20,7 @@ module.exports = {
       muted: "#6c757d",
       hover: "rgba(255, 255, 255, 0.1)",
       black: colors.black,
+      silver: "#c8c8c8",
       white: colors.white,
       gray: colors.trueGray,
       indigo: colors.indigo,
@@ -50,7 +54,7 @@ module.exports = {
           "50%": { opacity: "0" },
         },
         borderFlash: {
-          "0%, 49%, 100%": { borderColor: "black" },
+          "0%, 49%, 100%": { borderColor: "silver" },
           "50%, 99%": { borderColor: "transparent" },
         },
       },

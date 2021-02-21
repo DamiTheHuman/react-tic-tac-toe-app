@@ -1,3 +1,13 @@
-.app-height {
-  height: calc(100vh - 52px);
+th .content {
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+}
+
+.App {
+  background: url("./assets/images/background.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
