@@ -10,6 +10,7 @@ const RenderBoard = ({
   winningFigures,
   tie,
   resetBoard,
+  acceptPlayerInput,
 }) => {
   const renderLayout = layout.map((row, index) => {
     const renderCells = row.map((cell, cellIndex) => {
@@ -43,7 +44,7 @@ const RenderBoard = ({
       return (
         <th
           onClick={() => {
-            if (!gameEnded) {
+            if (!gameEnded && acceptPlayerInput) {
               onCellSelected(cellValue);
             }
           }}

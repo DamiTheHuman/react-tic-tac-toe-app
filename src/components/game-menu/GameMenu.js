@@ -1,6 +1,14 @@
 import React from "react";
 import "./GameMenu.css";
-const GameMenu = ({ tally, player1Turn }) => {
+const GameMenu = ({ tally, player1Turn, gameMode, toggleGameMode }) => {
+  const getGameMondMessage = () => {
+    switch (gameMode) {
+      case 1:
+        return "1P vs BOT";
+      default:
+        return "1P vs 2P";
+    }
+  };
   return (
     <div
       className="game-menu z-10 bg-white w-full sm:px-8 px-2 mt-8 
@@ -27,9 +35,14 @@ const GameMenu = ({ tally, player1Turn }) => {
           Player 2 (O)
           <span className="sm:text-2xl text-xl">{tally.player2Wins}</span>
         </div>
-        <div className="flex flex-col items-center p-2">
-          Mode
-          <span className="sm:text-2xl text-xl">1P vs 2P</span>
+        <div
+          className="flex flex-col items-center p-2 pointer hover:text-primary text-secondary"
+          onClick={() => {
+            toggleGameMode();
+          }}
+        >
+          Ghange Mode
+          <span className="sm:text-2xl text-xl">{getGameMondMessage()}</span>
         </div>
       </div>
     </div>
