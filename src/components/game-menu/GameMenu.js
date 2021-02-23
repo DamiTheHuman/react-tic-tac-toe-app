@@ -41,7 +41,7 @@ const GameMenu = ({ tally, player1Turn, gameMode, toggleGameMode }) => {
             toggleGameMode();
           }}
         >
-          Ghange Mode
+          Change Mode
           <span className="sm:text-2xl text-xl">{getGameMondMessage()}</span>
         </div>
       </div>
