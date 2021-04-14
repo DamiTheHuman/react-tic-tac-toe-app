@@ -5,6 +5,7 @@ const OPiece = () => {
     <div className="o-piece">
       <svg
         width="65"
+        className="xl:p-12 p-2"
         height="70"
         viewBox="0 0 65 70"
         fill="none"

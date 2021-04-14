@@ -5,6 +5,7 @@ const XPiece = () => {
     <div className="x-piece text-center">
       <svg
         width="71"
+        className="xl:p-12 p-2"
         height="68"
         viewBox="0 0 71 68"
         fill="none"
